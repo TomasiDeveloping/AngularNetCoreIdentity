@@ -1,4 +1,7 @@
+using Entities;
+using Entities.Models;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using NLog;
 using NLog.Web;
 using WebApi;
@@ -20,6 +23,9 @@ builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<RepositoryContext>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
