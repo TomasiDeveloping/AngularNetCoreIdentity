@@ -3,3 +3,9 @@
   font-style: italic;
   color: #fff;
 }
+ul {
+  width: 100%;
+}
+#register {
+  margin-left: auto;
+}

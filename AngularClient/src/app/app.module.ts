@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {RouterModule} from "@angular/router";
 import { CompaniesComponent } from './company/companies/companies.component';
 import { NotFoundComponent } from './error-pages/not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
 import { MenuComponent } from './menu/menu.component';
+import {ErrorHandlerService} from "./shared/services/error-handler.service";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,9 @@ import { MenuComponent } from './menu/menu.component';
       { path: '**', redirectTo: '/404', pathMatch: 'full'}
     ])
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorHandlerService, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

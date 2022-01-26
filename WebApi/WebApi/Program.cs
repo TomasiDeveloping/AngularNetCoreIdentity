@@ -24,7 +24,13 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-builder.Services.AddIdentity<User, IdentityRole>()
+builder.Services.AddIdentity<User, IdentityRole>(opt =>
+    {
+        opt.Password.RequiredLength = 7;
+        opt.Password.RequireDigit = false;
+
+        opt.User.RequireUniqueEmail = true;
+    })
     .AddEntityFrameworkStores<RepositoryContext>();
 
 builder.Services.AddControllers();
