@@ -46,10 +46,18 @@ export class LoginComponent implements OnInit {
     this._authService.loginUser('api/accounts/login', userForAuth).subscribe({
       next: ((res) => {
         // @ts-ignore
-        localStorage.setItem("token", res.token);
-        // @ts-ignore
-        this._authService.sendAuthStateChangeNotification(res.isAuthSuccessful);
-        this._router.navigate([this._returnUrl]).then();
+        if(res.is2StepVerificationRequired) {
+          this._router.navigate(['/authentication/twostepverification'],
+            // @ts-ignore
+            {queryParams: {returnUrl: this._returnUrl, provider: res.provider, email: userForAuth.email}}).then();
+         }
+        else {
+          // @ts-ignore
+          localStorage.setItem("token", res.token);
+          // @ts-ignore
+          this._authService.sendAuthStateChangeNotification(res.isAuthSuccessful);
+          this._router.navigate([this._returnUrl]);
+        }
       }),
       error: (error) => {
         this.errorMessage = error;
