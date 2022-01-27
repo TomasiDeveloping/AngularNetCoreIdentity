@@ -50,7 +50,8 @@ export class RegisterUserComponent implements OnInit {
       lastName: formValues.lastName,
       email: formValues.email,
       password: formValues.password,
-      confirmPassword: formValues.confirm
+      confirmPassword: formValues.confirm,
+      clientURI: 'http://localhost:4200/authentication/emailconfirmation'
     };
     this._authService.registerUser("api/accounts/registration", user).subscribe({
       next: (_ => {
