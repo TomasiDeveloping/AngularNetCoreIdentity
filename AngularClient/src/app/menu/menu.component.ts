@@ -11,13 +11,15 @@ export class MenuComponent implements OnInit {
   // @ts-ignore
   public isUserAuthenticated: boolean;
 
-  constructor(private _authService: AuthenticationService,  private _router: Router) { }
-
-  ngOnInit(): void {
+  constructor(private _authService: AuthenticationService,  private _router: Router) {
     this._authService.authChanged
       .subscribe(res => {
         this.isUserAuthenticated = res;
       });
+  }
+
+  ngOnInit(): void {
+
   }
 
   public logout = () => {

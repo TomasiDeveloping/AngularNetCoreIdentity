@@ -5,6 +5,7 @@ import {UserForRegistrationDto} from "../../_interfaces/user/UserForRegistration
 import {RegistrationResponseDto} from "../../_interfaces/response/registrationResponseDto.model";
 import {UserForAuthenticationDto} from "../../_interfaces/user/userForAuthenticationDto.model";
 import {Subject} from "rxjs";
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AuthenticationService {
   private _authChangeSub = new Subject<boolean>();
   public authChanged = this._authChangeSub.asObservable();
 
-  constructor(private _http: HttpClient, private _envUrl: EnvironmentUrlService) { }
+  constructor(private _http: HttpClient, private _envUrl: EnvironmentUrlService, private _jwtHelper: JwtHelperService) { }
 
   public registerUser = (route: string, body: UserForRegistrationDto) => {
     return this._http.post<RegistrationResponseDto> (this.createCompleteRoute(route, this._envUrl.urlAddress), body);
@@ -21,6 +22,13 @@ export class AuthenticationService {
 
   public loginUser = (route: string, body: UserForAuthenticationDto) => {
     return this._http.post(this.createCompleteRoute(route, this._envUrl.urlAddress), body);
+  }
+
+  public isUserAuthenticated = (): boolean => {
+    const token = localStorage.getItem("token");
+
+    // @ts-ignore
+    return token && !this._jwtHelper.isTokenExpired(token);
   }
 
   public sendAuthStateChangeNotification = (isAuthenticated: boolean) => {
@@ -34,5 +42,13 @@ export class AuthenticationService {
 
   private createCompleteRoute = (route: string, envAddress: string) => {
     return `${envAddress}/${route}`;
+  }
+
+  public isUserAdmin = (): boolean => {
+    const token = localStorage.getItem("token");
+    // @ts-ignore
+    const decodedToken = this._jwtHelper.decodeToken(token);
+    const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+    return role === 'Administrator';
   }
 }
