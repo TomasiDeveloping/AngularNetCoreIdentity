@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AbstractControl, ValidatorFn} from "@angular/forms";
 
 @Injectable({
@@ -6,10 +6,11 @@ import {AbstractControl, ValidatorFn} from "@angular/forms";
 })
 export class PasswordConfirmationValidatorService {
 
-  constructor() { }
+  constructor() {
+  }
 
   public validateConfirmPassword = (passwordControl: AbstractControl | null): ValidatorFn => {
-    return (confirmationControl: AbstractControl) : { [key: string]: boolean } | null => {
+    return (confirmationControl: AbstractControl): { [key: string]: boolean } | null => {
       const confirmValue = confirmationControl.value;
       // @ts-ignore
       const passwordValue = passwordControl.value;
@@ -18,7 +19,7 @@ export class PasswordConfirmationValidatorService {
         return;
       }
       if (confirmValue !== passwordValue) {
-        return  { mustMatch: true }
+        return {mustMatch: true}
       }
       return null;
     };

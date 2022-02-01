@@ -1,18 +1,17 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {EnvironmentUrlService} from "./environment-url.service";
 import {UserForRegistrationDto} from "../../_interfaces/user/UserForRegistrationDto.model";
 import {RegistrationResponseDto} from "../../_interfaces/response/registrationResponseDto.model";
 import {UserForAuthenticationDto} from "../../_interfaces/user/userForAuthenticationDto.model";
 import {Subject} from "rxjs";
-import { JwtHelperService } from '@auth0/angular-jwt';
+import {JwtHelperService} from '@auth0/angular-jwt';
 import {ForgotPassword} from "../../_interfaces/forgotPassword.model";
 import {ResetPasswordDto} from "../../_interfaces/resetPasswordDto.model";
 import {CustomEncoder} from "../customEncoder";
 import {TwoFactorDto} from "../../_interfaces/twoFactor/twoFactorDto.model";
 import {AuthResponseDto} from "../../_interfaces/response/authResponseDto.model";
-import { SocialAuthService } from "angularx-social-login";
-import { GoogleLoginProvider } from "angularx-social-login";
+import {GoogleLoginProvider, SocialAuthService} from "angularx-social-login";
 import {ExternalAuthDto} from "../../_interfaces/externalAuthDto.model";
 
 @Injectable({
@@ -22,10 +21,14 @@ export class AuthenticationService {
   private _authChangeSub = new Subject<boolean>();
   public authChanged = this._authChangeSub.asObservable();
 
-  constructor(private _http: HttpClient, private _envUrl: EnvironmentUrlService, private _jwtHelper: JwtHelperService,private _externalAuthService: SocialAuthService) { }
+  constructor(private _http: HttpClient,
+              private _envUrl: EnvironmentUrlService,
+              private _jwtHelper: JwtHelperService,
+              private _externalAuthService: SocialAuthService) {
+  }
 
   public registerUser = (route: string, body: UserForRegistrationDto) => {
-    return this._http.post<RegistrationResponseDto> (this.createCompleteRoute(route, this._envUrl.urlAddress), body);
+    return this._http.post<RegistrationResponseDto>(this.createCompleteRoute(route, this._envUrl.urlAddress), body);
   }
 
   public loginUser = (route: string, body: UserForAuthenticationDto) => {
@@ -57,18 +60,14 @@ export class AuthenticationService {
   }
 
   public confirmEmail = (route: string, token: string, email: string) => {
-    let params = new HttpParams({ encoder: new CustomEncoder() })
+    let params = new HttpParams({encoder: new CustomEncoder()})
     params = params.append('token', token);
     params = params.append('email', email);
-    return this._http.get(this.createCompleteRoute(route, this._envUrl.urlAddress), { params: params });
+    return this._http.get(this.createCompleteRoute(route, this._envUrl.urlAddress), {params: params});
   }
 
   public twoStepLogin = (route: string, body: TwoFactorDto) => {
     return this._http.post<AuthResponseDto>(this.createCompleteRoute(route, this._envUrl.urlAddress), body);
-  }
-
-  private createCompleteRoute = (route: string, envAddress: string) => {
-    return `${envAddress}/${route}`;
   }
 
   public isUserAdmin = (): boolean => {
@@ -79,14 +78,19 @@ export class AuthenticationService {
     return role === 'Administrator';
   }
 
-  public signInWithGoogle = ()=> {
+  public signInWithGoogle = () => {
     return this._externalAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
+
   public signOutExternal = () => {
     this._externalAuthService.signOut().then();
   }
 
   public externalLogin = (route: string, body: ExternalAuthDto) => {
     return this._http.post<AuthResponseDto>(this.createCompleteRoute(route, this._envUrl.urlAddress), body);
+  }
+
+  private createCompleteRoute = (route: string, envAddress: string) => {
+    return `${envAddress}/${route}`;
   }
 }

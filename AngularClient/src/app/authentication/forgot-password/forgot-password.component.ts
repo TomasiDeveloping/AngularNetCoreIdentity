@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthenticationService} from "../../shared/services/authentication.service";
 import {ForgotPassword} from "../../_interfaces/forgotPassword.model";
@@ -16,7 +16,8 @@ export class ForgotPasswordComponent implements OnInit {
   public showSuccess: boolean = false;
   public showError: boolean = false;
 
-  constructor(private _authService: AuthenticationService) { }
+  constructor(private _authService: AuthenticationService) {
+  }
 
   ngOnInit(): void {
     this.forgotPasswordForm = new FormGroup({
@@ -33,7 +34,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   public forgotPassword = (forgotPasswordFormValue: any) => {
     this.showError = this.showSuccess = false;
-    const forgotPass = { ...forgotPasswordFormValue };
+    const forgotPass = {...forgotPasswordFormValue};
     const forgotPassDto: ForgotPassword = {
       email: forgotPass.email,
       clientURI: 'http://localhost:4200/authentication/resetpassword'
@@ -41,7 +42,7 @@ export class ForgotPasswordComponent implements OnInit {
     this._authService.forgotPassword('api/accounts/forgotpassword', forgotPassDto).subscribe({
       next: ((_) => {
         this.showSuccess = true;
-        this.successMessage =  'The link has been sent, please check your email to reset your password.';
+        this.successMessage = 'The link has been sent, please check your email to reset your password.';
       }),
       error: (error) => {
         this.showError = true;

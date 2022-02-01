@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from "../../shared/services/authentication.service";
 import {ActivatedRoute} from "@angular/router";
 
@@ -12,7 +12,8 @@ export class EmailConfirmationComponent implements OnInit {
   public showError: boolean = false;
   public errorMessage: string = '';
 
-  constructor(private _authService: AuthenticationService, private _route: ActivatedRoute) { }
+  constructor(private _authService: AuthenticationService, private _route: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
     this.confirmEmail();

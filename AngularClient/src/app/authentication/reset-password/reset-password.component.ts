@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthenticationService} from "../../shared/services/authentication.service";
 import {
@@ -22,7 +22,8 @@ export class ResetPasswordComponent implements OnInit {
   private _email: string = '';
 
   constructor(private _authService: AuthenticationService, private _passConfValidator: PasswordConfirmationValidatorService,
-              private _route: ActivatedRoute) { }
+              private _route: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
     this.resetPasswordForm = new FormGroup({
@@ -45,7 +46,7 @@ export class ResetPasswordComponent implements OnInit {
   }
   public resetPassword = (resetPasswordFormValue: any) => {
     this.showError = this.showSuccess = false;
-    const resetPass = { ... resetPasswordFormValue };
+    const resetPass = {...resetPasswordFormValue};
     const resetPassDto: ResetPasswordDto = {
       password: resetPass.password,
       confirmPassword: resetPass.confirm,
@@ -53,13 +54,13 @@ export class ResetPasswordComponent implements OnInit {
       email: this._email
     }
     this._authService.resetPassword('api/accounts/resetpassword', resetPassDto).subscribe({
-      next: ((_) => {
-        this.showSuccess = true;
-      }),
-      error: (error) => {
-        this.showError = true;
-        this.errorMessage = error;
-      }
+        next: ((_) => {
+          this.showSuccess = true;
+        }),
+        error: (error) => {
+          this.showError = true;
+          this.errorMessage = error;
+        }
       }
     );
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -6,10 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  // @ts-ignore
-  public homeText: string;
 
-  constructor() { }
+  public homeText: string = '';
+
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.homeText = "WELCOME TO Angular .NET 6 Identity CLIENT APP"

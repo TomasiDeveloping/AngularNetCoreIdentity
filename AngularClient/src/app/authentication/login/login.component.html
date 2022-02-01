@@ -4,20 +4,20 @@
     <div *ngIf="showError" class="alert alert-danger" role="alert">
       {{errorMessage}}
     </div>
-    <form [formGroup]="loginForm" autocomplete="off" novalidate (ngSubmit)="loginUser(loginForm.value)">
+    <form (ngSubmit)="loginUser(loginForm.value)" [formGroup]="loginForm" autocomplete="off" novalidate>
       <div class="row mb-3">
-        <label for="username" class="col-form-label col-sm-2">Username:</label>
+        <label class="col-form-label col-sm-2" for="username">Username:</label>
         <div class="col-md-5">
-          <input type="text" id="username" formControlName="username" class="form-control" />
+          <input class="form-control" formControlName="username" id="username" type="text"/>
         </div>
         <div class="col-md-5">
           <em *ngIf="validateControl('username') && hasError('username', 'required')">Username is required</em>
         </div>
       </div>
       <div class="row mb-3">
-        <label for="password" class="col-form-label col-sm-2">Password:</label>
+        <label class="col-form-label col-sm-2" for="password">Password:</label>
         <div class="col-md-5">
-          <input type="password" id="password" formControlName="password" class="form-control" />
+          <input class="form-control" formControlName="password" id="password" type="password"/>
         </div>
         <div class="col-md-5">
           <em *ngIf="validateControl('password') && hasError('password', 'required')">Password is required</em>
@@ -30,7 +30,7 @@
       <br>
       <div class="row mb-3">
         <div class="col-md-1">
-          <button type="submit" class="btn btn-info" [disabled]="!loginForm.valid">Login</button>
+          <button [disabled]="!loginForm.valid" class="btn btn-info" type="submit">Login</button>
         </div>
       </div>
     </form>
@@ -38,7 +38,7 @@
     <div>
       <h2>External Providers</h2>
       <div style="padding: 20px;">
-        <button class="btn btn-info" type="button" (click)="externalLogin()">Google</button>
+        <button (click)="externalLogin()" class="btn btn-info" type="button">Google</button>
       </div>
     </div>
   </div>

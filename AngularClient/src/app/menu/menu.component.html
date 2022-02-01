@@ -1,34 +1,34 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-  <a class="navbar-brand" [routerLink]="['/home']" routerLinkActive="active"
-     [routerLinkActiveOptions]="{exact: true}">Account-Owner Home</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <a [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/home']" class="navbar-brand"
+       routerLinkActive="active">Account-Owner Home</a>
+    <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+            data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/company/companies']" routerLinkActive="active"
-           [routerLinkActiveOptions]="{exact: true}"> Companies </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/privacy']" routerLinkActive="active"
-           [routerLinkActiveOptions]="{exact: true}"> Privacy </a>
-      </li>
-      <li class="nav-item register" *ngIf="!isUserAuthenticated">
-        <a class="nav-link"[routerLink]="['/authentication/login']" routerLinkActive="active"
-           [routerLinkActiveOptions]="{exact: true}">Login</a>
-      </li>
-      <li class="nav-item" *ngIf="!isUserAuthenticated">
-        <a class="nav-link"[routerLink]="['/authentication/register']" routerLinkActive="active"
-           [routerLinkActiveOptions]="{exact: true}">Register</a>
-      </li>
-      <li class="nav-item register" *ngIf="isUserAuthenticated">
-        <button class="btn btn-link" style="color: #ffffff80;" (click)="logout()">Logout</button>
-      </li>
-    </ul>
-  </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/company/companies']" class="nav-link"
+             routerLinkActive="active"> Companies </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/privacy']" class="nav-link"
+             routerLinkActive="active"> Privacy </a>
+        </li>
+        <li *ngIf="!isUserAuthenticated" class="nav-item register">
+          <a [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/authentication/login']" class="nav-link"
+             routerLinkActive="active">Login</a>
+        </li>
+        <li *ngIf="!isUserAuthenticated" class="nav-item">
+          <a [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/authentication/register']" class="nav-link"
+             routerLinkActive="active">Register</a>
+        </li>
+        <li *ngIf="isUserAuthenticated" class="nav-item register">
+          <button (click)="logout()" class="btn btn-link" style="color: #ffffff80;">Logout</button>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>

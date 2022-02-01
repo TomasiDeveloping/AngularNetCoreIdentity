@@ -21,9 +21,15 @@
         <tr *ngFor="let company of companies">
           <td>{{company.name}}</td>
           <td>{{company.fullAddress}}</td>
-          <td><button type="button" id="details" class="btn btn-light">Details</button></td>
-          <td><button type="button" id="update" class="btn btn-success">Update</button></td>
-          <td><button type="button" id="delete" class="btn btn-danger">Delete</button></td>
+          <td>
+            <button class="btn btn-light" id="details" type="button">Details</button>
+          </td>
+          <td>
+            <button class="btn btn-success" id="update" type="button">Update</button>
+          </td>
+          <td>
+            <button class="btn btn-danger" id="delete" type="button">Delete</button>
+          </td>
         </tr>
         </tbody>
       </table>

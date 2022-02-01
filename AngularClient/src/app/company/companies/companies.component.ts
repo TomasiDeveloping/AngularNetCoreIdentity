@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Company} from "../../_interfaces/company.model";
 import {RepositoryService} from "../../shared/services/repository.service";
 
@@ -11,7 +11,8 @@ export class CompaniesComponent implements OnInit {
   // @ts-ignore
   public companies: Company[];
 
-  constructor(private repository: RepositoryService) { }
+  constructor(private repository: RepositoryService) {
+  }
 
   ngOnInit(): void {
     this.getCompanies();
@@ -19,9 +20,10 @@ export class CompaniesComponent implements OnInit {
 
   public getCompanies = () => {
     const apiAddress: string = "api/companies";
-    this.repository.getData(apiAddress)
-      .subscribe(res => {
+    this.repository.getData(apiAddress).subscribe({
+      next: ((res) => {
         this.companies = res as Company[];
       })
+    });
   }
 }

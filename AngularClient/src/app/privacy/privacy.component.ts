@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RepositoryService} from "../shared/services/repository.service";
 
 @Component({
@@ -8,19 +8,21 @@ import {RepositoryService} from "../shared/services/repository.service";
 })
 export class PrivacyComponent implements OnInit {
 
-  public claims: {type: string, value: string}[] = [];
+  public claims: { type: string, value: string }[] = [];
 
-  constructor(private _repository: RepositoryService) { }
+  constructor(private _repository: RepositoryService) {
+  }
 
   ngOnInit(): void {
     this.getClaims();
   }
 
-  public getClaims = () =>{
-    this._repository.getData('api/companies/privacy')
-      .subscribe(res => {
+  public getClaims = () => {
+    this._repository.getData('api/companies/privacy').subscribe({
+      next: ((res) => {
         this.claims = res as [];
       })
+    });
   }
 
 }
