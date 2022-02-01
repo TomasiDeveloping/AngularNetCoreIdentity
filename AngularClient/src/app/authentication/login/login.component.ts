@@ -15,10 +15,8 @@ export class LoginComponent implements OnInit {
   // @ts-ignore
   public loginForm: FormGroup;
   public errorMessage: string = '';
-  // @ts-ignore
-  public showError: boolean;
-  // @ts-ignore
-  private _returnUrl: string;
+  public showError: boolean = false;
+  private _returnUrl: string = '';
 
   constructor(private _authService: AuthenticationService, private _router: Router, private _route: ActivatedRoute) {
   }
@@ -72,7 +70,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("token", res.token);
           // @ts-ignore
           this._authService.sendAuthStateChangeNotification(res.isAuthSuccessful);
-          this._router.navigate([this._returnUrl]);
+          this._router.navigate([this._returnUrl]).then();
         }
       }),
       error: (error) => {
@@ -83,17 +81,18 @@ export class LoginComponent implements OnInit {
   }
 
   private validateExternalAuth(externalAuth: ExternalAuthDto) {
-    this._authService.externalLogin('api/accounts/externallogin', externalAuth)
-      .subscribe(res => {
-          localStorage.setItem("token", res.token);
-          this._authService.sendAuthStateChangeNotification(res.isAuthSuccessful);
-          this._router.navigate([this._returnUrl]);
-        },
-        error => {
-          this.errorMessage = error;
-          this.showError = true;
-          this._authService.signOutExternal();
-        });
+    this._authService.externalLogin('api/accounts/externallogin', externalAuth).subscribe({
+      next: ((res) => {
+        localStorage.setItem("token", res.token);
+        this._authService.sendAuthStateChangeNotification(res.isAuthSuccessful);
+        this._router.navigate([this._returnUrl]).then();
+      }),
+      error: (error) => {
+        this.errorMessage = error;
+        this.showError = true;
+        this._authService.signOutExternal();
+      }
+    });
   }
 
 }

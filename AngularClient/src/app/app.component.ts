@@ -6,14 +6,14 @@ import {AuthenticationService} from "./shared/services/authentication.service";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'AngularClient';
 
   constructor(private _authService: AuthenticationService) {
   }
 
   ngOnInit(): void {
-    if(this._authService.isUserAuthenticated())
+    if (this._authService.isUserAuthenticated())
       this._authService.sendAuthStateChangeNotification(true);
   }
 }

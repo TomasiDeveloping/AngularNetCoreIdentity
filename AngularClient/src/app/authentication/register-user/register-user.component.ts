@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthenticationService} from "../../shared/services/authentication.service";
 import {UserForRegistrationDto} from "../../_interfaces/user/UserForRegistrationDto.model";
@@ -16,10 +16,10 @@ export class RegisterUserComponent implements OnInit {
   // @ts-ignore
   public registerForm: FormGroup;
   public errorMessage: string = '';
-  // @ts-ignore
-  public showError: boolean;
+  public showError: boolean = false;
 
-  constructor(private _authService: AuthenticationService, private _passConfValidator: PasswordConfirmationValidatorService,  private _router: Router) { }
+  constructor(private _authService: AuthenticationService, private _passConfValidator: PasswordConfirmationValidatorService, private _router: Router) {
+  }
 
   ngOnInit(): void {
     this.registerForm = new FormGroup({
@@ -31,7 +31,7 @@ export class RegisterUserComponent implements OnInit {
     });
     // @ts-ignore
     this.registerForm.get('confirm').setValidators([Validators.required,
-    this._passConfValidator.validateConfirmPassword(this.registerForm.get('password'))]);
+      this._passConfValidator.validateConfirmPassword(this.registerForm.get('password'))]);
   }
 
   public validateControl = (controlName: string) => {
@@ -44,7 +44,7 @@ export class RegisterUserComponent implements OnInit {
 
   public registerUser = (registerFormValue: any) => {
     this.showError = false;
-    const formValues = { ...registerFormValue };
+    const formValues = {...registerFormValue};
     const user: UserForRegistrationDto = {
       firstName: formValues.firstName,
       lastName: formValues.lastName,

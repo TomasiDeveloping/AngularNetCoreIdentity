@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from "../shared/services/authentication.service";
 import {Router} from "@angular/router";
 import {SocialAuthService} from "angularx-social-login";
@@ -9,12 +9,13 @@ import {SocialAuthService} from "angularx-social-login";
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-  // @ts-ignore
-  public isUserAuthenticated: boolean;
-  // @ts-ignore
-  public isExternalAuth: boolean;
 
-  constructor(private _authService: AuthenticationService,  private _router: Router,private _socialAuthService: SocialAuthService) {
+  public isUserAuthenticated: boolean = false;
+  public isExternalAuth: boolean = false;
+
+  constructor(private _authService: AuthenticationService,
+              private _router: Router,
+              private _socialAuthService: SocialAuthService) {
     this._authService.authChanged
       .subscribe(res => {
         this.isUserAuthenticated = res;
@@ -22,10 +23,11 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._authService.authChanged
-      .subscribe(res => {
+    this._authService.authChanged.subscribe({
+      next: ((res) => {
         this.isUserAuthenticated = res;
-      });
+      })
+    });
     this._socialAuthService.authState.subscribe(user => {
       this.isExternalAuth = user != null;
     });
@@ -33,7 +35,7 @@ export class MenuComponent implements OnInit {
 
   public logout = () => {
     this._authService.logout();
-    if(this.isExternalAuth)
+    if (this.isExternalAuth)
       this._authService.signOutExternal();
     this._router.navigate(["/"]).then();
   }
