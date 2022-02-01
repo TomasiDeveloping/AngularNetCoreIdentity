@@ -1,7 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Entities.DataTransferObjects;
 using Entities.Models;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
@@ -12,11 +14,13 @@ namespace WebApi.JwtFeatures
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
         private readonly IConfigurationSection _jwtSettings;
+        private readonly IConfigurationSection _goolgeSettings;
         public JwtHandler(IConfiguration configuration, UserManager<User> userManager)
         {
             _configuration = configuration;
             _userManager = userManager;
             _jwtSettings = _configuration.GetSection("JwtSettings");
+            _goolgeSettings = _configuration.GetSection("GoogleAuthSettings");
         }
 
         public async Task<string> GenerateToken(User user)
@@ -26,7 +30,25 @@ namespace WebApi.JwtFeatures
             var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
             var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             return token;
-        } 
+        }
+
+        public async Task<GoogleJsonWebSignature.Payload> VerifyGoogleToken(ExternalAuthDto externalAuth)
+        {
+            try
+            {
+                var settings = new GoogleJsonWebSignature.ValidationSettings()
+                {
+                    Audience = new List<string>() { _goolgeSettings.GetSection("clientId").Value }
+                };
+                var payload = await GoogleJsonWebSignature.ValidateAsync(externalAuth.IdToken, settings);
+                return payload;
+            }
+            catch (Exception ex)
+            {
+                //log an exception
+                return null;
+            }
+        }
 
         private SigningCredentials GetSigningCredentials()
         {
