@@ -11,6 +11,9 @@ import {ResetPasswordDto} from "../../_interfaces/resetPasswordDto.model";
 import {CustomEncoder} from "../customEncoder";
 import {TwoFactorDto} from "../../_interfaces/twoFactor/twoFactorDto.model";
 import {AuthResponseDto} from "../../_interfaces/response/authResponseDto.model";
+import { SocialAuthService } from "angularx-social-login";
+import { GoogleLoginProvider } from "angularx-social-login";
+import {ExternalAuthDto} from "../../_interfaces/externalAuthDto.model";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +22,7 @@ export class AuthenticationService {
   private _authChangeSub = new Subject<boolean>();
   public authChanged = this._authChangeSub.asObservable();
 
-  constructor(private _http: HttpClient, private _envUrl: EnvironmentUrlService, private _jwtHelper: JwtHelperService) { }
+  constructor(private _http: HttpClient, private _envUrl: EnvironmentUrlService, private _jwtHelper: JwtHelperService,private _externalAuthService: SocialAuthService) { }
 
   public registerUser = (route: string, body: UserForRegistrationDto) => {
     return this._http.post<RegistrationResponseDto> (this.createCompleteRoute(route, this._envUrl.urlAddress), body);
@@ -74,5 +77,16 @@ export class AuthenticationService {
     const decodedToken = this._jwtHelper.decodeToken(token);
     const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
     return role === 'Administrator';
+  }
+
+  public signInWithGoogle = ()=> {
+    return this._externalAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+  public signOutExternal = () => {
+    this._externalAuthService.signOut().then();
+  }
+
+  public externalLogin = (route: string, body: ExternalAuthDto) => {
+    return this._http.post<AuthResponseDto>(this.createCompleteRoute(route, this._envUrl.urlAddress), body);
   }
 }
